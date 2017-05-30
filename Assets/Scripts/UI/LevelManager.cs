@@ -8,6 +8,6 @@ public class LevelManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        GetComponent<Text>().text = "Level: " + (PlayerData.unlockedLevel);
+        GetComponent<Text>().text = "Level: " + (GameManager.currentLevel - 1);
     }
 }

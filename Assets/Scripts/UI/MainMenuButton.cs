@@ -12,6 +12,7 @@ public class MainMenuButton : MonoBehaviour {
 
     private void clicked()
     {
+        GameManager.StartTime();
         GameManager.loadLevel(0, false);
     }
 }

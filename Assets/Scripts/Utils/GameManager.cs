@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager gameManager;
 
     public static int currentLevel = 0;
+
     private static int maxLevel; 
    
     // Use this for initialization
@@ -19,52 +20,82 @@ public class GameManager : MonoBehaviour {
             Destroy(this);*/
 
         //gets the number of level
-        maxLevel = SceneManager.sceneCountInBuildSettings;
+        maxLevel = SceneManager.sceneCountInBuildSettings - 1;
 
         //gets the currenlevel
-        currentLevel = PlayerPrefs.GetInt("Level");
+        if(PlayerPrefs.HasKey("Level"))
+            currentLevel = PlayerPrefs.GetInt("Level");
     }
 
     public static void completeLevel(bool IsScoring)
     {
         //checking if there is more levels
-        if (currentLevel + 1 <= maxLevel - 1)
-        {          
-            if(IsScoring)        
+        if (currentLevel + 1 <= maxLevel)
+        {
+            if (IsScoring)
                 PlayerData.Scoring(5);
 
             //resetting the checkpoint index
             PlayerMovement.checkpoint = Vector3.zero;
 
-            PlayerData.unlockedLevel++;
             currentLevel++;
+
+            if (GameManager.currentLevel > PlayerData.unlockedLevel)
+                PlayerData.unlockedLevel = currentLevel;
 
             PlayerData.Save();
             loadLevel(currentLevel, true);
         }
         else
-            Application.Quit();
-
-        //System.GC.Collect();
+            GameManager.loadLevel(maxLevel, false);
     }
 
     void OnApplicationQuit()
     {
-        PlayerData.Save();
-        GC.Collect();
+       /* PlayerData.Save();
+        GC.Collect();*/
     }
 
     public static void loadLevel(int level, bool loadingScreen)
     {
-        if(!loadingScreen)
+        GameManager.currentLevel = level;
+
+        if (GameManager.currentLevel > PlayerData.unlockedLevel)
+            PlayerData.unlockedLevel = currentLevel;
+
+        PlayerData.Save();
+
+        if (!loadingScreen)
             SceneManager.LoadScene(level);
+        else
+            SceneManager.LoadScene("LoadingScene");      
+    }
+
+    public static void loadLevel(string levelName, bool loadingScreen)
+    {
+        GameManager.currentLevel = SceneManager.GetSceneByName(levelName).buildIndex;
+
+        if (!loadingScreen)
+            SceneManager.LoadScene(levelName);
         else
             SceneManager.LoadScene("LoadingScene");
     }
 
+    private void OnApplicationPause(bool pause)
+    {
+        PlayerData.Save();
+    }
+
+    public static void SaveAndExit()
+    {
+        // FileManager.Save(PlayerData.player, typeof(PlayerData), "playerData");
+        PlayerData.Save();
+        Application.Quit();
+    }
+
     public void loadLevel(int level)
     {
-        currentLevel = level;
+        GameManager.currentLevel = level;
         SceneManager.LoadScene("LoadingScene");    
     }
 
@@ -92,8 +123,12 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("DeathCount", 0);     */
 
         PlayerPrefs.DeleteAll();
-
         PlayerPrefs.Save();
+
+        GameManager.currentLevel = 0;
+        PlayerData.unlockedLevel = 0;
+
+        
     }
 
     public static void StopTime()

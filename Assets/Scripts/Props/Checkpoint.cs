@@ -9,6 +9,8 @@ public class Checkpoint : MonoBehaviour {
 
     public AudioClip saveSound;
 
+    public ParticleSystem saveParticle;
+
     void Start()
     {
         PortalId = id;
@@ -32,5 +34,7 @@ public class Checkpoint : MonoBehaviour {
         GetComponentInChildren<Flag>().activateFlag(true);
 
         GetComponent<AudioSource>().PlayOneShot(saveSound);
+
+        Instantiate(saveParticle, transform.position, Quaternion.identity);
     }
 }

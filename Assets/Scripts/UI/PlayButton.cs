@@ -27,9 +27,12 @@ public class PlayButton : MonoBehaviour {
 
             PlayerPrefs.SetInt("Level", 0);
 
+            //because the first true level is index 1
+            PlayerPrefs.SetInt("LevelUnlocked", 1);
+
             PlayerPrefs.Save();
 
-            GameManager.completeLevel(false);
+            GameManager.loadLevel("InstructionsLevel", true);
         }
           
     }

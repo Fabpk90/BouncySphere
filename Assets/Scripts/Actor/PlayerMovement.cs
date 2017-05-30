@@ -91,25 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 GetComponent<Rigidbody>().AddForce(input);
             }
 
-}
-
-    private static void SaveAndExit()
-    {
-        // FileManager.Save(PlayerData.player, typeof(PlayerData), "playerData");
-        PlayerData.Save();
-        Application.Quit();
     }
-
-    private void OnApplicationPause(bool pause)
-    {
-        PlayerData.Save();
-    }
-
-    /* [Conditional("UNITY_ANDROID")]
-     private void HandlePhoneTouches()
-     {
-
-     }*/
 
     private void OnCollisionEnter(Collision Object)
     {

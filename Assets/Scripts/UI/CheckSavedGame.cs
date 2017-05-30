@@ -30,17 +30,10 @@ public class CheckSavedGame : MonoBehaviour {
         */
 
         if(PlayerPrefs.HasKey("PlayerName"))
-        {
-            if(PlayerPrefs.GetInt("Level") == SceneManager.sceneCountInBuildSettings - 1)
-            {
-                PlayerPrefs.SetInt("Level", 1);
-            }
-
+        {         
             Destroy(objs);
 
-            GameManager.loadLevel(PlayerPrefs.GetInt("Level"), true);
-
-            Debug.Log("qds");
+            GameManager.loadLevel(GameManager.currentLevel, true);
         }
     }
     /// <summary>

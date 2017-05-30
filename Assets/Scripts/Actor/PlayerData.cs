@@ -21,32 +21,37 @@ namespace Assets.Scripts
             //Load();
 
             //DontDestroyOnLoad(this);
+            if (PlayerPrefs.HasKey("PlayerName"))
+            {
+                playerName = PlayerPrefs.GetString("PlayerName");
 
-            playerName = PlayerPrefs.GetString("PlayerName");
+                Score = PlayerPrefs.GetInt("Score");
+                highScore = PlayerPrefs.GetInt("HighScore");
 
-            Score = PlayerPrefs.GetInt("Score");
-            highScore = PlayerPrefs.GetInt("HighScore");
+                unlockedLevel = PlayerPrefs.GetInt("LevelUnlocked");
 
-            unlockedLevel = PlayerPrefs.GetInt("Level");
+                deathCount = PlayerPrefs.GetInt("DeathCount");
 
-            deathCount = PlayerPrefs.GetInt("DeathCount");
+                if (playerName.Length == 0)
+                    playerName = PlayerNameManager.PlayerName;
+
+                //updates score
+                checkScore();
+
+                //sets the name on the ui
+                PlayerNameManager.changeName(playerName);
+
+                
+            }
 
             soundLevel = PlayerPrefs.GetFloat("SoundLevel", -1);
 
             if (soundLevel == -1)
                 soundLevel = 1.0f;
 
-            if (playerName.Length == 0)
-                playerName = PlayerNameManager.PlayerName;
-
-            //updates score
-            checkScore();  
-
-            //sets the name on the ui
-            PlayerNameManager.changeName(playerName);
-
             //sets the sound volume
             AudioListener.volume = soundLevel;
+
         }
 
         public static void Save()
@@ -56,7 +61,8 @@ namespace Assets.Scripts
             PlayerPrefs.SetInt("Score", Score);
             PlayerPrefs.SetInt("HighScore", highScore);
 
-            PlayerPrefs.SetInt("Level", unlockedLevel);
+            PlayerPrefs.SetInt("LevelUnlocked", unlockedLevel);
+            PlayerPrefs.SetInt("Level", GameManager.currentLevel);
 
             PlayerPrefs.SetInt("DeathCount", deathCount);
 
