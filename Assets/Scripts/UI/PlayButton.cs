@@ -25,14 +25,14 @@ public class PlayButton : MonoBehaviour {
             PlayerPrefs.SetInt("Score", 0);
             PlayerPrefs.SetInt("HighScore", 0);
 
-            PlayerPrefs.SetInt("Level", 0);
+            PlayerPrefs.SetInt("Level", 1);
 
             //because the first true level is index 1
             PlayerPrefs.SetInt("LevelUnlocked", 1);
 
             PlayerPrefs.Save();
 
-            GameManager.loadLevel("InstructionsLevel", true);
+            GameManager.loadLevel("InstructionsLevel");
         }
           
     }

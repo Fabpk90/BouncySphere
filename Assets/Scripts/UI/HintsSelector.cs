@@ -22,7 +22,7 @@ public class HintsSelector : MonoBehaviour {
             GetComponent<Text>().text = Hints[indexDialog];
         }
         else
-            GameManager.loadLevel("Level1", true);
+            GameManager.loadLevel("Level1");
         
     }
 

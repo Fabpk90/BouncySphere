@@ -58,9 +58,6 @@ public class GameManager : MonoBehaviour {
 
     public static void loadLevel(int level, bool loadingScreen)
     {
-        //because of hints level
-        level = level + 1;
-
         GameManager.currentLevel = level;
 
         if (GameManager.currentLevel > PlayerData.unlockedLevel)
@@ -74,18 +71,9 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene("LoadingScene");      
     }
 
-    public static void loadLevel(string levelName, bool loadingScreen)
+    public static void loadLevel(string levelName)
     {
-
-
-        GameManager.currentLevel = SceneManager.GetSceneByName(levelName).buildIndex;
-
-        Debug.Log(GameManager.currentLevel);
-
-        if (!loadingScreen)
-            SceneManager.LoadScene(levelName);
-        else
-            SceneManager.LoadScene("LoadingScene");
+        SceneManager.LoadSceneAsync(levelName);
     }
 
     private void OnApplicationPause(bool pause)
