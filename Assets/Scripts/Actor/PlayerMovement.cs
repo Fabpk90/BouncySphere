@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     
     public GameObject deathParticles;//particle spawn durig the death
     public AudioClip deathSound; //sound played at death
+
     public static Vector3 checkpoint;//store the position of the last checkpoint reached
 
     private Vector3 input;//used as a force impulse using user's input
@@ -74,8 +75,7 @@ public class PlayerMovement : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-    
-                //then checkAndLoadLevel the direction of the phone
+                   
                 if (Input.touches[0].deltaPosition.x > 0)//going to the right
                     goRight();
                 else if (Input.touches[0].deltaPosition.x< 0)//going to the left
@@ -123,10 +123,13 @@ public class PlayerMovement : MonoBehaviour
         else if(Object.transform.name == "Portal")
         {
             if(Object.collider.GetComponent<Portal>().destination!= null)
+            {
                 transform.position = Object.collider.GetComponent<Portal>().destination.position;
+            }
+                
         }
 
-        //the player its a checkpoont
+        //the player hits a checkpoont
         else if(Object.transform.name == "Checkpoint" )
         {
             checkpoint = Object.transform.position;

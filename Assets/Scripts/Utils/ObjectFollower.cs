@@ -5,7 +5,7 @@ public class ObjectFollower : MonoBehaviour {
 
     public GameObject ObjectToFollow = null;
 
-    public Vector3 DistanceFromObject;
+    public Vector3 DistanceFromObject = new Vector3(0, 5, -15);
     public Vector3 Rotation;
 
     //used for storing the distance from the object
