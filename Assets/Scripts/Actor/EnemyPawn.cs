@@ -22,12 +22,9 @@ public class EnemyPawn : MonoBehaviour
     {
       
         if (transform.position == patrolPoint[currentPoint].position)
-            {
-                currentPoint++;
-            }
-
-        if (currentPoint >= patrolPoint.Length)
-            currentPoint = 0;
+        {
+            currentPoint = (currentPoint + 1) % patrolPoint.Length;
+        }    
 
         transform.position = Vector3.MoveTowards(transform.position, patrolPoint[currentPoint].position, moveSpeed * Time.deltaTime);
     }

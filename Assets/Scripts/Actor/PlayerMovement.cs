@@ -51,19 +51,14 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 GameManager.StartTime();
-            }
-
-           
-
+            }     
         }
 
 
         if (GetComponent<Rigidbody>().velocity.magnitude < maxSpeed)
             {
                 input = new Vector3(0, 0, 0);
-
 #if UNITY_STANDALONE
-
                 if (Input.GetAxisRaw("Horizontal") > 0)//goes to the right
                     goRight();
                 else if (Input.GetAxisRaw("Horizontal") < 0)//goes to the left
@@ -87,10 +82,8 @@ public class PlayerMovement : MonoBehaviour
                 else if (Input.touches[0].deltaPosition.y< 0)
                     goBackward();
 #endif
-
                 GetComponent<Rigidbody>().AddForce(input);
             }
-
     }
 
     private void OnCollisionEnter(Collision Object)
@@ -167,15 +160,15 @@ public class PlayerMovement : MonoBehaviour
         Instantiate(deathParticles, transform.position, Quaternion.identity);
         GetComponent<AudioSource>().PlayOneShot(deathSound, 10); // boom
 
-        //using another object instead of set() because it seems to work this way...
-        Vector3 newPos = checkpoint;
-        newPos.y += 1;    
-
         //stopping the forces applied after the death
         GetComponent<Rigidbody>().velocity = Vector3.zero;
 
         GetComponent<PlayerData>().Die();
 
+        Vector3 newPos = checkpoint;
+        newPos.y += 1;
+
+        //get to the checkpoint
         transform.position = newPos;
     }
 

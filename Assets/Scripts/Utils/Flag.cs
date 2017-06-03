@@ -17,11 +17,10 @@ public class Flag : MonoBehaviour {
         {
             if (transform.position.y < yPositionStart + 2.0f)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y + Time.deltaTime, transform.position.z);              
+                transform.position = new Vector3(transform.position.x, transform.position.y + Time.deltaTime, transform.position.z);
             }
             else
-                isAnimated = false;
-               
+                enabled = false;// stops update
         }
     }
 
