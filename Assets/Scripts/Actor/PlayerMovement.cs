@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     public static Vector3 checkpoint;//store the position of the last checkpoint reached
 
-    private Vector3 input;//used as a force impulse using user's input
+    private Vector3 movementVEctor;//used as a force impulse using user's input
 
     public static bool isCheckpointing = false;
 
@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (GetComponent<Rigidbody>().velocity.magnitude < maxSpeed)
             {
-                input = new Vector3(0, 0, 0);
+                movementVEctor = new Vector3(0, 0, 0);
 #if UNITY_STANDALONE
                 if (Input.GetAxisRaw("Horizontal") > 0)//goes to the right
                     goRight();
@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
                 else if (Input.touches[0].deltaPosition.y< 0)
                     goBackward();
 #endif
-                GetComponent<Rigidbody>().AddForce(input);
+                GetComponent<Rigidbody>().AddForce(movementVEctor);
             }
     }
 
@@ -137,22 +137,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void goRight()
     {
-        input.x = (moveSpeed * multiplySpeed) * Time.deltaTime;
+        movementVEctor.x = (moveSpeed * multiplySpeed) * Time.deltaTime;
     }
 
     private void goLeft()
     {
-        input.x = -((moveSpeed * multiplySpeed) * Time.deltaTime);
+        movementVEctor.x = -((moveSpeed * multiplySpeed) * Time.deltaTime);
     }
 
     private void goToward()
     {
-        input.z = (moveSpeed * multiplySpeed) * Time.deltaTime;
+        movementVEctor.z = (moveSpeed * multiplySpeed) * Time.deltaTime;
     }
 
     private void goBackward()
     {
-        input.z = -((moveSpeed * multiplySpeed) * Time.deltaTime);
+        movementVEctor.z = -((moveSpeed * multiplySpeed) * Time.deltaTime);
     }
 
     private void Die()
