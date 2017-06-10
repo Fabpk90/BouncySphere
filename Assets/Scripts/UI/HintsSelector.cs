@@ -5,24 +5,42 @@ using UnityEngine.UI;
 
 public class HintsSelector : MonoBehaviour {
 
-    public string[] Hints;
+    public string[] HintsDesktop;
+    public string[] HintsMobile;
 
     private int indexDialog = 0;
 
 	// Use this for initialization
 	void Start () {
-        GetComponent<Text>().text = Hints[indexDialog];
+        if(Application.platform == RuntimePlatform.Android)
+            GetComponent<Text>().text = HintsMobile[indexDialog];
+        else
+            GetComponent<Text>().text = HintsDesktop[indexDialog];
     }
 
     public void nextDialog()
     {
-        if (indexDialog + 1 < Hints.Length)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            indexDialog++;
-            GetComponent<Text>().text = Hints[indexDialog];
+            if (indexDialog + 1 < HintsMobile.Length)
+            {
+                indexDialog++;
+                GetComponent<Text>().text = HintsMobile[indexDialog];
+            }
+            else
+                GameManager.loadLevel("Level1");
         }
         else
-            GameManager.loadLevel("Level1");
+        {
+            if (indexDialog + 1 < HintsDesktop.Length)
+            {
+                indexDialog++;
+                GetComponent<Text>().text = HintsDesktop[indexDialog];
+            }
+            else
+                GameManager.loadLevel("Level1");
+        }
+           
         
     }
 

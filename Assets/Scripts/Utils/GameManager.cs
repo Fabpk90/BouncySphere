@@ -52,8 +52,7 @@ public class GameManager : MonoBehaviour {
 
     void OnApplicationQuit()
     {
-       /* PlayerData.Save();
-        GC.Collect();*/
+        PlayerData.Save();
     }
 
     public static void loadLevel(int level, bool loadingScreen)
