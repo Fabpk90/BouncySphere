@@ -69,6 +69,8 @@ namespace Assets.Scripts
             PlayerPrefs.SetFloat("SoundLevel", soundLevel);
 
             PlayerPrefs.Save();
+
+            Debug.Log("Prefs saved");
         }
 
         /*

@@ -6,6 +6,6 @@ public class LevelLoader : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        SceneManager.LoadSceneAsync(GameManager.currentLevel);	
+        GameManager.levelLoading = SceneManager.LoadSceneAsync(GameManager.currentLevel);	
 	}
 }

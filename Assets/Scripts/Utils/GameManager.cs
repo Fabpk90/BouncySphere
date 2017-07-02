@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour {
 
     public static int currentLevel = 0;
 
-    private static int maxLevel; 
+    private static int maxLevel;
+
+    public static AsyncOperation levelLoading;
    
     // Use this for initialization
     void Start()
@@ -72,12 +74,13 @@ public class GameManager : MonoBehaviour {
 
     public static void loadLevel(string levelName)
     {
-        SceneManager.LoadSceneAsync(levelName);
+        SceneManager.LoadSceneAsync(levelName);    
     }
 
     private void OnApplicationPause(bool pause)
     {
-        PlayerData.Save();
+        if (pause)
+            PlayerData.Save();
     }
 
     public static void SaveAndExit()
@@ -91,10 +94,12 @@ public class GameManager : MonoBehaviour {
     {
         GameManager.currentLevel = level;
         SceneManager.LoadScene("LoadingScene");    
+
     }
 
     public void Quit()
     {
+        PlayerData.Save();
         Application.Quit();
     }
 
@@ -115,14 +120,14 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("Level", 0);
 
         PlayerPrefs.SetInt("DeathCount", 0);     */
+        
+        PlayerPrefs.DeleteKey("PlayerName");
 
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
         GameManager.currentLevel = 0;
         PlayerData.unlockedLevel = 0;
-
-        
     }
 
     public static void StopTime()

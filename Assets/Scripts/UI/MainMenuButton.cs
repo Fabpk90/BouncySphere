@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuButton : MonoBehaviour {
@@ -13,6 +14,6 @@ public class MainMenuButton : MonoBehaviour {
     private void clicked()
     {
         GameManager.StartTime();
-        GameManager.loadLevel(0, false);
+        SceneManager.LoadScene(0);
     }
 }
