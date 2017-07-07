@@ -11,7 +11,7 @@ public class LevelSelectorPopulator : MonoBehaviour {
     private void Start()
     {
 
-        for(int i = 0; i < PlayerPrefs.GetInt("LevelUnlocked"); i++)
+        for(int i = 0; i < PlayerData.playerData.unlockedLevel; i++)
         {
             LevelSelectorButton button = Instantiate(levelButton) as LevelSelectorButton;
 

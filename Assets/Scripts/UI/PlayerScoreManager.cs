@@ -20,14 +20,14 @@ public class PlayerScoreManager : MonoBehaviour
         if(scoreText != null)
         {
             //makes the score red if it's negative
-            if (PlayerData.Score < 0)
+            if (PlayerData.playerData.Score < 0)
                 scoreText.color = new Color(1, 0, 0);
-            else if (PlayerData.Score > 0)
+            else if (PlayerData.playerData.Score > 0)
                 scoreText.color = new Color(0, 1, 0);
             else
                 scoreText.color = new Color(1, 1, 1);
 
-            scoreText.text = "Score: " + PlayerData.Score;
+            scoreText.text = "Score: " + PlayerData.playerData.Score;
         }
         
     } 

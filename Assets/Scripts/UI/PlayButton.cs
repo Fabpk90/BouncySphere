@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Assets.Scripts;
 
 public class PlayButton : MonoBehaviour {
 
@@ -20,6 +21,7 @@ public class PlayButton : MonoBehaviour {
         {       
             PlayerNameManager.changeName(playerName.text);
 
+            /*
             PlayerPrefs.SetString("PlayerName", playerName.text);
 
             PlayerPrefs.SetInt("Score", 0);
@@ -30,7 +32,19 @@ public class PlayButton : MonoBehaviour {
             //because the first true level is index 1
             PlayerPrefs.SetInt("LevelUnlocked", 1);
 
-            PlayerPrefs.Save();
+            PlayerPrefs.Save();*/
+
+            PlayerData.playerData = new PlayerDataNormal();
+
+            PlayerData.playerData.playerName = playerName.text;
+
+            PlayerData.playerData.Score = 0;
+            PlayerData.playerData.highScore = 0;
+
+            PlayerData.playerData.currentLevel = 1;
+            PlayerData.playerData.unlockedLevel = 1;
+
+            PlayerData.Save();
 
             GameManager.loadLevel("InstructionsLevel");
         }

@@ -16,8 +16,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 movementVEctor;//used as a force impulse using user's input
 
-    public static bool isCheckpointing = false;
-
     private static float timer = 0;
 
     public GameObject PauseMenu;
@@ -28,6 +26,14 @@ public class PlayerMovement : MonoBehaviour
         checkpoint = transform.position;
 
         timer = 0.0f;
+
+       /*
+        bannerView = new BannerView("ca-app-pub-5899990337622125~6806158694", AdSize.SmartBanner, AdPosition.Top);
+        // Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().AddTestDevice(AdRequest.TestDeviceSimulator).Build();
+        // Load the banner with the request.
+        bannerView.LoadAd(request);
+        bannerView.Show();*/
     }
 
     // Update is called once per frame
@@ -41,19 +47,8 @@ public class PlayerMovement : MonoBehaviour
         //open up the menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseMenu.SetActive(!PauseMenu.activeSelf);
-
-            //menu opened
-            if (PauseMenu.activeSelf)
-            {
-                GameManager.StopTime();
-            }
-            else
-            {
-                GameManager.StartTime();
-            }     
+            TogglePauseMenu();
         }
-
 
         if (GetComponent<Rigidbody>().velocity.magnitude < maxSpeed)
             {
@@ -70,8 +65,9 @@ public class PlayerMovement : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-                   
-                if (Input.touches[0].deltaPosition.x > 0)//going to the right
+
+
+            if (Input.touches[0].deltaPosition.x > 0)//going to the right
                     goRight();
                 else if (Input.touches[0].deltaPosition.x< 0)//going to the left
                     goLeft();
@@ -84,6 +80,21 @@ public class PlayerMovement : MonoBehaviour
 #endif
                 GetComponent<Rigidbody>().AddForce(movementVEctor);
             }
+    }
+
+    private void TogglePauseMenu()
+    {
+        PauseMenu.SetActive(!PauseMenu.activeSelf);
+
+        //menu opened
+        if (PauseMenu.activeSelf)
+        {
+            GameManager.StopTime();
+        }
+        else
+        {
+            GameManager.StartTime();
+        }
     }
 
     private void OnCollisionEnter(Collision Object)
@@ -126,12 +137,9 @@ public class PlayerMovement : MonoBehaviour
         else if(Object.transform.name == "Checkpoint" )
         {
             checkpoint = Object.transform.position;
-            isCheckpointing = true;
 
             if (!Object.collider.GetComponent<Checkpoint>().IsActivated)
                 Object.collider.GetComponent<Checkpoint>().checkpointPassed();
-
-            //System.GC.Collect();
         }
     }
 

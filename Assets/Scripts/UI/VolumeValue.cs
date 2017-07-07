@@ -8,13 +8,13 @@ public class VolumeValue : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<Text>().text = "" + Mathf.Floor(PlayerData.soundLevel * 100);
+        GetComponent<Text>().text = "" + Mathf.Floor(PlayerData.playerData.soundLevel * 100);
     }
 
 
 	public void updateText(Text textToUpdate) {
 
-        textToUpdate.text = "" + Mathf.Floor(PlayerData.soundLevel * 100);
+        textToUpdate.text = "" + Mathf.Floor(PlayerData.playerData.soundLevel * 100);
 
 	}
 }

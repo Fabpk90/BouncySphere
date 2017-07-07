@@ -1,76 +1,107 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     class PlayerData : MonoBehaviour
     {
-        public static string playerName = "";
+        public static PlayerDataNormal playerData;
 
-        public static int Score = 0;
-        public static int highScore = 0;
-
-        public static int deathCount = 0;
-
-        public static int unlockedLevel = 0;
-
-        public static float soundLevel = 1.0f;
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             //Load();
 
-            //DontDestroyOnLoad(this);
-            if (PlayerPrefs.HasKey("PlayerName"))
+            BinaryFormatter bf = new BinaryFormatter();
+
+            FileStream saveFile = File.Open("Saves/save.dat", FileMode.Open);
+
+            PlayerDataNormal data = (PlayerDataNormal) bf.Deserialize(saveFile);
+
+            //if it's a proper save
+            if (data.playerName != null)
             {
-                playerName = PlayerPrefs.GetString("PlayerName");
+                PlayerData.playerData = new PlayerDataNormal();
 
-                Score = PlayerPrefs.GetInt("Score");
-                highScore = PlayerPrefs.GetInt("HighScore");
+                PlayerData.playerData = data;
 
-                unlockedLevel = PlayerPrefs.GetInt("LevelUnlocked");
-
-                deathCount = PlayerPrefs.GetInt("DeathCount");
-
-                if (playerName.Length == 0)
-                    playerName = PlayerNameManager.PlayerName;
-
-                //updates score
-                checkScore();
-
-                //sets the name on the ui
-                PlayerNameManager.changeName(playerName);
+                //sets the sound volume
+                AudioListener.volume = PlayerData.playerData.soundLevel;
 
                 
             }
+            else
+                Debug.Log("qsdqds");
 
-            soundLevel = PlayerPrefs.GetFloat("SoundLevel", -1);
+            saveFile.Close();
 
-            if (soundLevel == -1)
-                soundLevel = 1.0f;
 
-            //sets the sound volume
-            AudioListener.volume = soundLevel;
+
+            //DontDestroyOnLoad(this);
+            /* if (PlayerPrefs.HasKey("PlayerName"))
+             {
+                 playerName = PlayerPrefs.GetString("PlayerName");
+
+                 Score = PlayerPrefs.GetInt("Score");
+                 highScore = PlayerPrefs.GetInt("HighScore");
+
+                 unlockedLevel = PlayerPrefs.GetInt("LevelUnlocked");
+
+                 deathCount = PlayerPrefs.GetInt("DeathCount");
+
+                 if (playerName.Length == 0)
+                     playerName = PlayerNameManager.PlayerName;
+
+                 //updates score
+                 checkScore();
+
+                 //sets the name on the ui
+                 PlayerNameManager.changeName(playerName);
+
+
+             }*/
+
+            //soundLevel = PlayerPrefs.GetFloat("SoundLevel", -1);    
+
+
 
         }
 
         public static void Save()
         {
-            PlayerPrefs.SetString("PlayerName", playerName);
+            if (!Directory.Exists("Saves"))
+                Directory.CreateDirectory("Saves");
 
-            PlayerPrefs.SetInt("Score", Score);
-            PlayerPrefs.SetInt("HighScore", highScore);
 
-            PlayerPrefs.SetInt("LevelUnlocked", unlockedLevel);
+            if (playerData == null)
+            {
+                playerData = new PlayerDataNormal();
+                playerData.playerName = null;
+            }
+
+            FileStream saveFile = File.Create("Saves/save.dat");
+
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(saveFile, playerData);
+
+            saveFile.Close();
+
+
+            /*PlayerPrefs.SetString("PlayerName", PlayerData.playerData.playerName);
+
+            PlayerPrefs.SetInt("Score", PlayerData.playerData.Score);
+            PlayerPrefs.SetInt("HighScore", PlayerData.playerData.highScore);
+
+            PlayerPrefs.SetInt("LevelUnlocked", PlayerData.playerData.unlockedLevel);
             PlayerPrefs.SetInt("Level", GameManager.currentLevel);
 
-            PlayerPrefs.SetInt("DeathCount", deathCount);
+            PlayerPrefs.SetInt("DeathCount", PlayerData.playerData.deathCount);
 
-            PlayerPrefs.SetFloat("SoundLevel", soundLevel);
+            PlayerPrefs.SetFloat("SoundLevel", PlayerData.playerData.soundLevel);
 
-            PlayerPrefs.Save();
-
-            Debug.Log("Prefs saved");
+            PlayerPrefs.Save();*/
         }
 
         /*
@@ -82,42 +113,64 @@ namespace Assets.Scripts
 
         public void Die()
         {
-            Score--;
+            playerData.Score--;
             checkScore();
 
-            deathCount++;
+            playerData.deathCount++;
+        }
+
+        public static void Erase()
+        {
+            File.Delete("Saves/save.dat");
+            playerData = null;
         }
 
         public static void Scoring()
         {
-            Score++;
+            PlayerData.playerData.Score++;
             checkScore();      
         }
 
         private static void checkScore()
         {
-            if (Score > highScore)
-                highScore = Score;
+            if (PlayerData.playerData.Score > PlayerData.playerData.highScore)
+                PlayerData.playerData.highScore = PlayerData.playerData.Score;
 
             PlayerScoreManager.checkScore();
         }
 
         public static void Scoring(int value)
         {
-            Score += value;
+            PlayerData.playerData.Score += value;
             checkScore();
         }
 
         public static void UnScore()
         {
-            Score--;
+            PlayerData.playerData.Score--;
             checkScore();
         }
 
         public static void UnScore(int value)
         {
-            Score -= value;
+            PlayerData.playerData.Score -= value;
             checkScore();
         }
+    }
+
+    [System.Serializable]
+    class PlayerDataNormal
+    {
+        public string playerName = "";
+
+        public int Score = 0;
+        public int highScore = 0;
+
+        public int deathCount = 0;
+
+        public int unlockedLevel = 0;
+        public int currentLevel = 0;
+
+        public float soundLevel = 1.0f;
     }
 }

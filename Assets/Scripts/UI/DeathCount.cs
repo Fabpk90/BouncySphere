@@ -8,13 +8,13 @@ public class DeathCount : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        GetComponent<Text>().text = "Death: " + PlayerData.deathCount;
+        GetComponent<Text>().text = "Death: " + PlayerData.playerData.deathCount;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        GetComponent<Text>().text = "Death: " + PlayerData.deathCount;
+        GetComponent<Text>().text = "Death: " + PlayerData.playerData.deathCount;
     }
 }

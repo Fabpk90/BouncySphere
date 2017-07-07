@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager gameManager;
 
-    public static int currentLevel = 0;
-
     private static int maxLevel;
 
     public static AsyncOperation levelLoading;
@@ -24,15 +22,15 @@ public class GameManager : MonoBehaviour {
         //gets the number of level
         maxLevel = SceneManager.sceneCountInBuildSettings - 1;
 
-        //gets the currenlevel
+        /*
         if(PlayerPrefs.HasKey("Level"))
-            currentLevel = PlayerPrefs.GetInt("Level");
+            currentLevel = PlayerPrefs.GetInt("Level");*/
     }
 
     public static void completeLevel(bool IsScoring)
     {
         //checking if there is more levels
-        if (currentLevel + 1 <= maxLevel)
+        if (PlayerData.playerData.currentLevel + 1 <= maxLevel)
         {
             if (IsScoring)
                 PlayerData.Scoring(5);
@@ -40,13 +38,13 @@ public class GameManager : MonoBehaviour {
             //resetting the checkpoint index
             PlayerMovement.checkpoint = Vector3.zero;
 
-            currentLevel++;
+            PlayerData.playerData.currentLevel++;
 
-            if (GameManager.currentLevel > PlayerData.unlockedLevel)
-                PlayerData.unlockedLevel = currentLevel;
+            if (PlayerData.playerData.currentLevel > PlayerData.playerData.unlockedLevel)
+                PlayerData.playerData.unlockedLevel = PlayerData.playerData.currentLevel;
 
             PlayerData.Save();
-            loadLevel(currentLevel, true);
+            loadLevel(PlayerData.playerData.currentLevel, true);
         }
         else
             GameManager.loadLevel(maxLevel, false);
@@ -59,10 +57,10 @@ public class GameManager : MonoBehaviour {
 
     public static void loadLevel(int level, bool loadingScreen)
     {
-        GameManager.currentLevel = level;
+        PlayerData.playerData.currentLevel = level;
 
-        if (GameManager.currentLevel > PlayerData.unlockedLevel)
-            PlayerData.unlockedLevel = currentLevel;
+        if (PlayerData.playerData.currentLevel > PlayerData.playerData.unlockedLevel)
+            PlayerData.playerData.unlockedLevel = PlayerData.playerData.currentLevel;
 
         PlayerData.Save();
 
@@ -92,7 +90,7 @@ public class GameManager : MonoBehaviour {
 
     public void loadLevel(int level)
     {
-        GameManager.currentLevel = level;
+        PlayerData.playerData.currentLevel = level;
         SceneManager.LoadScene("LoadingScene");    
 
     }
@@ -106,7 +104,7 @@ public class GameManager : MonoBehaviour {
     public void changeSoundLevel(UnityEngine.UI.Slider slider)
     {
         AudioListener.volume = slider.value;
-        PlayerData.soundLevel = slider.value;
+        PlayerData.playerData.soundLevel = slider.value;
     }
 
     public void erasePlayerData()
@@ -120,14 +118,17 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("Level", 0);
 
         PlayerPrefs.SetInt("DeathCount", 0);     */
-        
-        PlayerPrefs.DeleteKey("PlayerName");
+
+        PlayerData.Erase();
+
+
+        /*PlayerPrefs.DeleteKey("PlayerName");
 
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
         GameManager.currentLevel = 0;
-        PlayerData.unlockedLevel = 0;
+        PlayerData.unlockedLevel = 0;*/
     }
 
     public static void StopTime()
