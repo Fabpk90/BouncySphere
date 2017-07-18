@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncySphere.Plugins", "BouncySphere.Plugins.csproj", "{56192969-0CAB-02A1-BFD4-F26C8579B2F1}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncySphere", "BouncySphere.csproj", "{6A661835-BBA8-8CBB-2834-F2045D7EF107}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncySphere.Editor", "BouncySphere.Editor.csproj", "{E3D174EF-EF2B-95BE-6A70-C8F7B63DC9E4}"
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56192969-0CAB-02A1-BFD4-F26C8579B2F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56192969-0CAB-02A1-BFD4-F26C8579B2F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56192969-0CAB-02A1-BFD4-F26C8579B2F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56192969-0CAB-02A1-BFD4-F26C8579B2F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6A661835-BBA8-8CBB-2834-F2045D7EF107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A661835-BBA8-8CBB-2834-F2045D7EF107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A661835-BBA8-8CBB-2834-F2045D7EF107}.Release|Any CPU.ActiveCfg = Release|Any CPU

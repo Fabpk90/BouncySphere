@@ -18,6 +18,6 @@ public class LevelSelectorButton : MonoBehaviour {
 
     void ButtonPushed()
     {
-        GameManager.loadLevel(level, true);
+        GameManager.loadLevel(level + 1, true);
     }
 }

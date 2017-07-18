@@ -21,14 +21,6 @@ public class CheckSavedGame : MonoBehaviour {
     /// <param name="objs"></param>
     public void checkAndLoadLevel(UnityEngine.Object objs)
     {
-        //the player has a saved game
-        /* if(File.Exists(Application.persistentDataPath + "/playerData.dat"))
-         {
-             Destroy(objs);
-             GameManager.completeLevel(false);
-         }
-        */
-
         if(PlayerData.playerData != null)
         {         
             Destroy(objs);

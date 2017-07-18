@@ -11,9 +11,25 @@ public class ResumeButton : MonoBehaviour {
         GetComponent<Button>().onClick.AddListener(clicked);
     }
 
+    private void OnEnable()
+    {
+        print("yo");
+
+        if (GameManager.playerMovement.Dead)
+        {
+            GetComponentInChildren<Text>().text = "Respawn";
+        } 
+    }
+
     private void clicked()
     {
         GameManager.StartTime();
-        ((Component) gameObject.GetComponentInParent<Canvas>()).gameObject.SetActive(false);
+
+        GameManager.playerMovement.TogglePauseMenu();
+
+        if (GameManager.playerMovement.Dead)
+        {
+            GameManager.playerMovement.Respawn();
+        }
     }
 }

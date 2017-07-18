@@ -21,19 +21,6 @@ public class PlayButton : MonoBehaviour {
         {       
             PlayerNameManager.changeName(playerName.text);
 
-            /*
-            PlayerPrefs.SetString("PlayerName", playerName.text);
-
-            PlayerPrefs.SetInt("Score", 0);
-            PlayerPrefs.SetInt("HighScore", 0);
-
-            PlayerPrefs.SetInt("Level", 1);
-
-            //because the first true level is index 1
-            PlayerPrefs.SetInt("LevelUnlocked", 1);
-
-            PlayerPrefs.Save();*/
-
             PlayerData.playerData = new PlayerDataNormal();
 
             PlayerData.playerData.playerName = playerName.text;

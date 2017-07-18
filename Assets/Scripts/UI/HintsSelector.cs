@@ -10,12 +10,19 @@ public class HintsSelector : MonoBehaviour {
 
     private int indexDialog = 0;
 
+    public GameObject BtnDialogText;
+
 	// Use this for initialization
 	void Start () {
         if(Application.platform == RuntimePlatform.Android)
             GetComponent<Text>().text = HintsMobile[indexDialog];
         else
             GetComponent<Text>().text = HintsDesktop[indexDialog];
+
+        if (indexDialog + 1 >= HintsMobile.Length)
+        {
+            BtnDialogText.GetComponent<Text>().text = "Play";
+        }
     }
 
     public void nextDialog()
@@ -26,6 +33,10 @@ public class HintsSelector : MonoBehaviour {
             {
                 indexDialog++;
                 GetComponent<Text>().text = HintsMobile[indexDialog];
+                if (indexDialog + 1 >= HintsMobile.Length)
+                {
+                    BtnDialogText.GetComponent<Text>().text = "Play";
+                }
             }
             else
                 GameManager.loadLevel("Level1");

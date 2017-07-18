@@ -14,6 +14,6 @@ public class MainMenuButton : MonoBehaviour {
     private void clicked()
     {
         GameManager.StartTime();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Menu");
     }
 }

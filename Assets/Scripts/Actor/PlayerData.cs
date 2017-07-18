@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -10,13 +12,13 @@ namespace Assets.Scripts
         public static PlayerDataNormal playerData;
 
         // Use this for initialization
-        void Awake()
+        void OnEnable()
         {
             //Load();
 
             BinaryFormatter bf = new BinaryFormatter();
 
-            FileStream saveFile = File.Open("Saves/save.dat", FileMode.Open);
+            FileStream saveFile = File.Open(Application.persistentDataPath+"save/save.dat", FileMode.Open);
 
             PlayerDataNormal data = (PlayerDataNormal) bf.Deserialize(saveFile);
 
@@ -32,36 +34,8 @@ namespace Assets.Scripts
 
                 
             }
-            else
-                Debug.Log("qsdqds");
 
             saveFile.Close();
-
-
-
-            //DontDestroyOnLoad(this);
-            /* if (PlayerPrefs.HasKey("PlayerName"))
-             {
-                 playerName = PlayerPrefs.GetString("PlayerName");
-
-                 Score = PlayerPrefs.GetInt("Score");
-                 highScore = PlayerPrefs.GetInt("HighScore");
-
-                 unlockedLevel = PlayerPrefs.GetInt("LevelUnlocked");
-
-                 deathCount = PlayerPrefs.GetInt("DeathCount");
-
-                 if (playerName.Length == 0)
-                     playerName = PlayerNameManager.PlayerName;
-
-                 //updates score
-                 checkScore();
-
-                 //sets the name on the ui
-                 PlayerNameManager.changeName(playerName);
-
-
-             }*/
 
             //soundLevel = PlayerPrefs.GetFloat("SoundLevel", -1);    
 
@@ -71,8 +45,8 @@ namespace Assets.Scripts
 
         public static void Save()
         {
-            if (!Directory.Exists("Saves"))
-                Directory.CreateDirectory("Saves");
+            if (!Directory.Exists(Application.persistentDataPath+"save"))
+                Directory.CreateDirectory(Application.persistentDataPath+"save");
 
 
             if (playerData == null)
@@ -81,7 +55,7 @@ namespace Assets.Scripts
                 playerData.playerName = null;
             }
 
-            FileStream saveFile = File.Create("Saves/save.dat");
+            FileStream saveFile = File.Create(Application.persistentDataPath+"save/save.dat");
 
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(saveFile, playerData);
@@ -89,27 +63,7 @@ namespace Assets.Scripts
             saveFile.Close();
 
 
-            /*PlayerPrefs.SetString("PlayerName", PlayerData.playerData.playerName);
-
-            PlayerPrefs.SetInt("Score", PlayerData.playerData.Score);
-            PlayerPrefs.SetInt("HighScore", PlayerData.playerData.highScore);
-
-            PlayerPrefs.SetInt("LevelUnlocked", PlayerData.playerData.unlockedLevel);
-            PlayerPrefs.SetInt("Level", GameManager.currentLevel);
-
-            PlayerPrefs.SetInt("DeathCount", PlayerData.playerData.deathCount);
-
-            PlayerPrefs.SetFloat("SoundLevel", PlayerData.playerData.soundLevel);
-
-            PlayerPrefs.Save();*/
         }
-
-        /*
-        public static void Load()
-        {
-             player = FileManager.Load<PlayerData>("playerData");
-        }
-        */
 
         public void Die()
         {
@@ -121,7 +75,7 @@ namespace Assets.Scripts
 
         public static void Erase()
         {
-            File.Delete("Saves/save.dat");
+            File.Delete(Application.persistentDataPath+"save/save.dat");
             playerData = null;
         }
 
@@ -156,6 +110,70 @@ namespace Assets.Scripts
             PlayerData.playerData.Score -= value;
             checkScore();
         }
+
+        public static bool UpdateTimerEndLevel(float seconds, int level)
+        {
+            bool updated = false;
+            bool found = false;
+
+            foreach(PlayerDataTime timer in playerData.listTime)
+            {
+                if (timer.Level == level)
+                {
+                    found = true;
+                    if (timer.Seconds > seconds)
+                    {
+                        timer.Seconds = seconds;
+                        updated = true;
+                    }
+                }         
+            }
+
+            if(!found)
+            {
+                playerData.listTime.Add(new PlayerDataTime(seconds, playerData.currentLevel));
+                updated = true;
+            }
+
+            return updated;
+        }
+
+        public static bool UpdateTimerEndLevel(PlayerDataTime timer)
+        {
+          return UpdateTimerEndLevel(timer.Seconds, timer.Level);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns>return the index in the list, -1 if not found</returns>
+        public static int getTimerIndexByLevel(int level)
+        {
+            for(int i = 0; i < playerData.listTime.Count; ++i)
+            {
+                if (playerData.listTime[i].Level == level)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns>timer or null</returns>
+        public static PlayerDataTime getTimerBylevel(int level)
+        {
+            foreach(PlayerDataTime timer in playerData.listTime)
+            {
+                if (timer.Level == level)
+                    return timer;
+            }
+
+            return null;
+        }
     }
 
     [System.Serializable]
@@ -172,5 +190,20 @@ namespace Assets.Scripts
         public int currentLevel = 0;
 
         public float soundLevel = 1.0f;
+
+        public List<PlayerDataTime> listTime = new List<PlayerDataTime>();
+    }
+
+    [System.Serializable]
+   public class PlayerDataTime
+    {
+        public float Seconds = -1.0f;
+        public int Level = -1;
+
+        public PlayerDataTime(float seconds, int level)
+        {
+            this.Seconds = seconds;
+            this.Level = level;
+        }
     }
 }

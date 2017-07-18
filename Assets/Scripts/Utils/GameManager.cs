@@ -7,39 +7,26 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager gameManager;
 
-    private static int maxLevel;
-
     public static AsyncOperation levelLoading;
-   
-    // Use this for initialization
-    void Start()
-    {
-       /* if(gameManager == null)
-            gameManager = this;
-        else
-            Destroy(this);*/
 
-        //gets the number of level
-        maxLevel = SceneManager.sceneCountInBuildSettings - 1;
-
-        /*
-        if(PlayerPrefs.HasKey("Level"))
-            currentLevel = PlayerPrefs.GetInt("Level");*/
-    }
+    public static PlayerMovement playerMovement;
 
     public static void completeLevel(bool IsScoring)
     {
-        //checking if there is more levels
-        if (PlayerData.playerData.currentLevel + 1 <= maxLevel)
+        
+        if (IsScoring)
+            PlayerData.Scoring(5);
+
+        //resetting the checkpoint index
+        PlayerMovement.checkpoint = Vector3.zero;
+
+        //check for best time
+        PlayerData.UpdateTimerEndLevel(PlayerMovement.getTimer(), PlayerData.playerData.currentLevel);
+
+        PlayerData.playerData.currentLevel++;
+
+        if (Application.CanStreamedLevelBeLoaded("Level" + PlayerData.playerData.currentLevel))
         {
-            if (IsScoring)
-                PlayerData.Scoring(5);
-
-            //resetting the checkpoint index
-            PlayerMovement.checkpoint = Vector3.zero;
-
-            PlayerData.playerData.currentLevel++;
-
             if (PlayerData.playerData.currentLevel > PlayerData.playerData.unlockedLevel)
                 PlayerData.playerData.unlockedLevel = PlayerData.playerData.currentLevel;
 
@@ -47,7 +34,7 @@ public class GameManager : MonoBehaviour {
             loadLevel(PlayerData.playerData.currentLevel, true);
         }
         else
-            GameManager.loadLevel(maxLevel, false);
+            loadLevel("FinishGame"); 
     }
 
     void OnApplicationQuit()
@@ -83,7 +70,6 @@ public class GameManager : MonoBehaviour {
 
     public static void SaveAndExit()
     {
-        // FileManager.Save(PlayerData.player, typeof(PlayerData), "playerData");
         PlayerData.Save();
         Application.Quit();
     }
@@ -92,7 +78,6 @@ public class GameManager : MonoBehaviour {
     {
         PlayerData.playerData.currentLevel = level;
         SceneManager.LoadScene("LoadingScene");    
-
     }
 
     public void Quit()
@@ -109,26 +94,7 @@ public class GameManager : MonoBehaviour {
 
     public void erasePlayerData()
     {
-        /*
-        PlayerPrefs.SetString("PlayerName", "");
-
-         PlayerPrefs.SetInt("Score", 0);
-         PlayerPrefs.SetInt("HighScore", 0);
-
-        PlayerPrefs.SetInt("Level", 0);
-
-        PlayerPrefs.SetInt("DeathCount", 0);     */
-
         PlayerData.Erase();
-
-
-        /*PlayerPrefs.DeleteKey("PlayerName");
-
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
-
-        GameManager.currentLevel = 0;
-        PlayerData.unlockedLevel = 0;*/
     }
 
     public static void StopTime()
