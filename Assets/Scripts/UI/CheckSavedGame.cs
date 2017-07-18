@@ -10,6 +10,8 @@ public class CheckSavedGame : MonoBehaviour {
 
     public List<UnityEngine.Object> obj;
 
+    public GameObject text;
+
     void Start()
     {
         if (callCheck)
@@ -17,7 +19,7 @@ public class CheckSavedGame : MonoBehaviour {
 
         if (PlayerData.playerData == null)
         {
-            GetComponentInChildren<Text>().text = "New Game";
+            text.GetComponent<Text>().text = "New Game";
         }
 
     }
