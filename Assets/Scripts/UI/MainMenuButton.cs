@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,7 @@ public class MainMenuButton : MonoBehaviour {
     private void clicked()
     {
         GameManager.StartTime();
+        PlayerData.Save();
         SceneManager.LoadScene("Menu");
     }
 }

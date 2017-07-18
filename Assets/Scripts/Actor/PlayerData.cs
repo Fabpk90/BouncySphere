@@ -14,28 +14,34 @@ namespace Assets.Scripts
         // Use this for initialization
         void OnEnable()
         {
-            //Load();
 
-            BinaryFormatter bf = new BinaryFormatter();
-
-            FileStream saveFile = File.Open(Application.persistentDataPath+"save/save.dat", FileMode.Open);
-
-            PlayerDataNormal data = (PlayerDataNormal) bf.Deserialize(saveFile);
-
-            //if it's a proper save
-            if (data.playerName != null)
+            if (Directory.Exists(Application.persistentDataPath + "/save"))
             {
-                PlayerData.playerData = new PlayerDataNormal();
+                BinaryFormatter bf = new BinaryFormatter();
 
-                PlayerData.playerData = data;
+                FileStream saveFile = File.Open(Application.persistentDataPath + "/save/save.dat", FileMode.Open);
 
-                //sets the sound volume
-                AudioListener.volume = PlayerData.playerData.soundLevel;
+                PlayerDataNormal data = (PlayerDataNormal)bf.Deserialize(saveFile);
 
-                
+                //if it's a proper save
+                if (data.playerName != null)
+                {
+                    
+
+                    PlayerData.playerData = data;
+
+                    //sets the sound volume
+                    AudioListener.volume = PlayerData.playerData.soundLevel;
+
+
+                }
+                else
+                    print("load error");
+
+                saveFile.Close();
             }
 
-            saveFile.Close();
+              
 
             //soundLevel = PlayerPrefs.GetFloat("SoundLevel", -1);    
 
@@ -45,17 +51,18 @@ namespace Assets.Scripts
 
         public static void Save()
         {
-            if (!Directory.Exists(Application.persistentDataPath+"save"))
-                Directory.CreateDirectory(Application.persistentDataPath+"save");
+            if (!Directory.Exists(Application.persistentDataPath+"/save"))
+                Directory.CreateDirectory(Application.persistentDataPath+"/save");
 
 
-            if (playerData == null)
+            if (PlayerData.playerData == null)
             {
+                print("playerdata null");
                 playerData = new PlayerDataNormal();
                 playerData.playerName = null;
             }
 
-            FileStream saveFile = File.Create(Application.persistentDataPath+"save/save.dat");
+            FileStream saveFile = File.Create(Application.persistentDataPath+"/save/save.dat");
 
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(saveFile, playerData);
@@ -75,7 +82,7 @@ namespace Assets.Scripts
 
         public static void Erase()
         {
-            File.Delete(Application.persistentDataPath+"save/save.dat");
+            File.Delete(Application.persistentDataPath+"/save/save.dat");
             playerData = null;
         }
 
@@ -179,7 +186,7 @@ namespace Assets.Scripts
     [System.Serializable]
     class PlayerDataNormal
     {
-        public string playerName = "";
+        public string playerName;
 
         public int Score = 0;
         public int highScore = 0;

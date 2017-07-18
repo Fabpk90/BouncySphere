@@ -13,8 +13,6 @@ public class ResumeButton : MonoBehaviour {
 
     private void OnEnable()
     {
-        print("yo");
-
         if (GameManager.playerMovement.Dead)
         {
             GetComponentInChildren<Text>().text = "Respawn";

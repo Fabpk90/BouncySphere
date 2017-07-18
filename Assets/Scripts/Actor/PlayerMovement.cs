@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject PauseMenu;
 #if UNITY_ANDROID
     private MonoBehaviour Joypad;
+    private MonoBehaviour bgPad;
 #endif
     // Use this for initialization
     void Start()
@@ -42,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (child.name == "MobileJoystick")
                 Joypad = child.GetComponent<MonoBehaviour>();
+            if (child.name == "bgPad")
+                bgPad = child.GetComponent<MonoBehaviour>();
         }
 #endif
 
@@ -128,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
 
 #if UNITY_ANDROID
         Joypad.gameObject.GetComponent<Image>().enabled = !Joypad.gameObject.GetComponent<Image>().enabled;
+        bgPad.gameObject.GetComponent<Image>().enabled = !bgPad.gameObject.GetComponent<Image>().enabled;
 #endif
         //menu opened
         if (PauseMenu.activeSelf)

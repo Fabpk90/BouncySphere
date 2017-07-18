@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CheckSavedGame : MonoBehaviour {
     public bool callCheck;
@@ -13,6 +14,12 @@ public class CheckSavedGame : MonoBehaviour {
     {
         if (callCheck)
             check(obj);
+
+        if (PlayerData.playerData == null)
+        {
+            GetComponentInChildren<Text>().text = "New Game";
+        }
+
     }
 
     /// <summary>

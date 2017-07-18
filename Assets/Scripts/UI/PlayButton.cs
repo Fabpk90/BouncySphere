@@ -19,8 +19,6 @@ public class PlayButton : MonoBehaviour {
     {
         if(playerName.text != null && playerName.text.Length >= minChar)
         {       
-            PlayerNameManager.changeName(playerName.text);
-
             PlayerData.playerData = new PlayerDataNormal();
 
             PlayerData.playerData.playerName = playerName.text;

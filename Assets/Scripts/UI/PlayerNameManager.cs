@@ -1,21 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Assets.Scripts;
 
 public class PlayerNameManager : MonoBehaviour
 {
-    public static string PlayerName;
 
     // Use this for initialization
     void Start()
     {
        //DontDestroyOnLoad(this);
-       GetComponent<Text>().text = PlayerName;    
+       GetComponent<Text>().text = PlayerData.playerData.playerName;    
     }
 
-    public static void changeName(string newName)
-    {
-        PlayerName = newName;
-    }
 }
 

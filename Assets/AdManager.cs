@@ -45,15 +45,6 @@ public class AdManager : MonoBehaviour {
         // Load the banner with the request.
         bannerView.LoadAd(request);
 
-        bannerView.OnAdLoaded += BannerView_OnAdLoaded;
-
-        /*BannerView bannerAd = new BannerView(adID, AdSize.SmartBanner, AdPosition.Top);
-        bannerAd.LoadAd(request);*/
-    }
-
-    private void BannerView_OnAdLoaded(object sender, System.EventArgs e)
-    {
-        Debug.Log("loaded");
     }
 
 
